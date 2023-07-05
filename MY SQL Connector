@@ -1,0 +1,69 @@
+-- create database 
+create database quiz1;
+use quiz1;
+-- create table
+create table questions(
+id int(11) auto_increment,
+question varchar(225), option1 varchar(225),
+option2 varchar(225), option3 varchar(225),option4 varchar(225),ans int,
+primary key(id)
+);
+-- insert the values to the table
+insert into questions(question,option1,option2,option3,option4,ans)values 
+("How many monts do we have in a year?","twelve","nine","eight","four",1),
+("How many days do we have in a week?","two","three","seven","ten",3),
+("Which animal is knoun as the king of the jungle?","lion","rhino","seeta","pig",1),
+("Name of the national fruit?","banana","jackfruit","mango","apple",3);
+-- show the table
+select*from questions;
+
+#import the sql connector
+import mysql.connector
+
+mydb=mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="root",
+    database="quiz1"
+)
+# define the function of display the questions
+cursor=mydb.cursor()
+def display_questions(cursor):
+    query=("select*from questions")
+    cursor.execute(query)
+    questions=cursor.fetchall()
+# looping for the user answer
+    for question in questions:
+        print("Questions:",question[1])
+        print("Options:")
+        print("1.",question[2])
+        print("2.",question[3])
+        print("3.",question[4])
+        print("4.",question[5])
+        print()
+# define the function of the user answer
+def take_quiz(cursor):
+    score=0
+    query=("select*from questions")
+    cursor.execute(query)
+    questions=cursor.fetchall() 
+# looping for the questions with answer  
+    for question in questions:
+        print("Questions:",question[1])
+        print("Options:")
+        print("1.",question[2])
+        print("2.",question[3])
+        print("3.",question[4])
+        print("4.",question[5])
+        print()
+        print("Enter your answer(1-4):")
+        user_ans=int(input())
+        if user_ans==question[6]:
+            score+=1
+    return score
+# call the function and print the score
+print("Questions:")
+display_questions(cursor)
+print("answers:")
+user_score=take_quiz(cursor)
+print(user_score) 
